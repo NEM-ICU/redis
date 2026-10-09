@@ -1,0 +1,98 @@
+{
+  "compilerOptions": {
+    // =========================
+    // 1. LANGUAGE & ENVIRONMENT
+    // =========================
+
+    "target": "ES2022",
+    // Modern JavaScript output.
+
+    "lib": ["ES2022"],
+    // Node.js backend does not need DOM/browser types.
+
+    // =========================
+    // 2. MODULES
+    // =========================
+
+    "module": "NodeNext",
+    // Modern Node.js module system.
+
+    "moduleResolution": "NodeNext",
+    // Resolve imports using Node.js rules.
+
+    // =========================
+    // 3. TYPE CHECKING
+    // =========================
+
+    "strict": true,
+    // Enable all strict type checking.
+
+    "noImplicitAny": true,
+    // Prevent accidental `any`.
+
+    "strictNullChecks": true,
+    // null and undefined are separate types.
+
+    "strictFunctionTypes": true,
+    // Strict function parameter checking.
+
+    "strictPropertyInitialization": true,
+    // Class properties must be initialized.
+
+    // =========================
+    // 4. JAVASCRIPT
+    // =========================
+
+    "allowJs": false,
+    // Only TypeScript files.
+
+    "checkJs": false,
+
+    // =========================
+    // 5. OUTPUT
+    // =========================
+
+    "rootDir": ".",
+    // Your TypeScript files are currently in the project root
+    // and inside folders such as routes/.
+
+    "outDir": "./dist",
+    // Compiled JavaScript goes here.
+
+    "declaration": true,
+    // Generate .d.ts files.
+
+    "sourceMap": true,
+    // Generate source maps for debugging.
+
+    // =========================
+    // 6. IMPORTS
+    // =========================
+
+    "esModuleInterop": true,
+    // Better compatibility with CommonJS packages.
+
+    "allowSyntheticDefaultImports": true,
+
+    "resolveJsonModule": true,
+    // Allows importing JSON files.
+
+    // =========================
+    // 7. PATH ALIASES
+    // =========================
+
+    "baseUrl": ".",
+
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+
+  // =========================
+  // 8. FILES
+  // =========================
+
+  "include": ["**/*.ts"],
+
+  "exclude": ["node_modules", "dist"]
+}
