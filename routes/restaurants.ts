@@ -8,8 +8,10 @@ import {
 } from "@/schemas/restaurants.js";
 import { initializeRedisClient } from "@/utils/client.js";
 import {
+  bloomKey,
   cuisineKey,
   cusinesKey,
+  indexKey,
   restaurantCuisinesKeyById,
   restaurantKeyById,
   restaurantsByRatingKey,
@@ -57,6 +59,13 @@ router.post("/", validate(RestaurantSchema), async (req, res, next) => {
 
     const id = nanoid();
     const restaurantKey = restaurantKeyById(id);
+    const bloomString = `${data.name}:${data.location}`;
+    const seenBefore = await client.bf.exists(bloomKey, bloomString);
+
+    if (seenBefore) {
+      return errorResponse(res, 409, "Restaurant already exists");
+    }
+
     const hashData = { id, name: data.name, location: data.location };
 
     await Promise.all([
@@ -73,6 +82,7 @@ router.post("/", validate(RestaurantSchema), async (req, res, next) => {
         score: 0,
         value: id,
       }),
+      client.bf.add(bloomKey, bloomString),
     ]);
 
     return successResponse(res, hashData);
@@ -120,6 +130,18 @@ router.post(
     }
   },
 );
+
+router.get("/search", async (req, res, next) => {
+  const { q } = req.query;
+
+  try {
+    const client = await initializeRedisClient();
+    const results = await client.ft.search(indexKey, `@name:${q}`);
+    return successResponse(res, results);
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.get(
   "/:restaurantId/weather",
